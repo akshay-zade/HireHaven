@@ -1,8 +1,67 @@
-import React from 'react'
+
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom"
+
+import { Toaster } from "react-hot-toast"
+
+import LandingPage from "./pages/LandingPage/LandingPage"
+import SignUp from "./pages/Auth/SignUp"
+import Login from "./pages/auth/Login"
+import JobSeekerDashboard from "./pages/JobSeeker/JobSeekerDashboard"
+import JobDetails from "./pages/JobSeeker/JobDetails"
+import SavedJobs from "./pages/JobSeeker/SavedJobs"
+import UserProfile from "./pages/JobSeeker/UserProfile"
+import ProtectedRoute from "./routes/ProtectedRoute"
+import EmployerDashboard from "./pages/Employer/EmployerDashboard"
+import JobPostingForm from "./pages/Employer/JobPostingForm"
+import ManageJob from "./pages/Employer/ManageJob"
+import ApplicationViewer from "./pages/Employer/ApplicationViewer"
+import EmployerProfilePage from "./pages/Employer/EmployerProfilePage"
+
 
 const App = () => {
   return (
-    <div className='text-center text-4xl text-red-500'>App</div>
+    <div>
+
+      <Router>
+        <Routes>
+          {/* {public routes} */}
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/login" element={<Login />} />
+
+          <Route path="/find-jobs" element={<JobSeekerDashboard />} />
+          <Route path="/job/:jobId" element={<JobDetails />} />
+          <Route path="/saved-jobs" element={<SavedJobs />} />
+          <Route path="/profile" element={<UserProfile />} />
+
+          {/* {Protected routes} */}
+          <Route element={<ProtectedRoute requiredRole="employer" />}>
+            <Route path="/employer-dashboard" element={<EmployerDashboard />} />
+            <Route path="/job-posting" element={<JobPostingForm />} />
+            <Route path="/manage-job" element={<ManageJob />} />
+            <Route path="/applicants" element={<ApplicationViewer />} />
+            <Route path="/company-profile" element={<EmployerProfilePage />} />
+          </Route>
+
+          {/* {Catch all routes} */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </Router>
+
+      <Toaster
+        toastOptions={{
+          className: "",
+          style: {
+            fontSize: "13px"
+          }
+        }}
+      />
+    </div>
   )
 }
 
